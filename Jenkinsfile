@@ -8,8 +8,7 @@ pipeline {
 				   echo "Executing Automated Test3..."
 			      }
 			}
-            steps { 
-        	stage('Build') { 
+            stage('Build') { 
             steps { 
                     echo 'Building... Step#1' 
 				    echo 'Building... Step#2'
@@ -26,4 +25,4 @@ pipeline {
 			  	    echo "Clean the borken build, notify the R&D Teams"
         } 
     } 
-} 
+}
