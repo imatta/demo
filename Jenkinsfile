@@ -1,41 +1,29 @@
 pipeline { 
-
     agent any 
-
     stages { 
-
-        stage('Build') { 
-
+			stage('Test') { 
+			steps {
+				   echo "Executing Automated Test1..."
+				   echo "Executing Automated Test2..."
+				   echo "Executing Automated Test3..."
+			      }
+			}
             steps { 
-
-                echo 'Building...' 
-
-	             // all your software / app configuration  
-
-              //and deployment steps here,  
-
-              //step-by-step or stage by stage 
-
+        	stage('Build') { 
+            steps { 
+                    echo 'Building... Step#1' 
+				    echo 'Building... Step#2'
             } 
-
         } 
-
     } 
-
     post { 
-
-        success { 
-
-            echo "success" 
-
+	       success { 
+                     echo "Success" 
+			         echo "Copy the artifact to the deployment server!" 
+	       } 
+	      failure { 
+            		echo "Failed" 
+			  	    echo "Clean the borken build, notify the R&D Teams"
         } 
-
-        failure { 
-
-            echo "failed" 
-
-        } 
-
     } 
-
 } 
