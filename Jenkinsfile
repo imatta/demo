@@ -15,11 +15,8 @@ pipeline {
             steps { 
                     echo 'Building... Step#1' 
 				    echo 'Building... Step#2'
-					sh '''
-                    	echo "Starting build process..."
-                    	./Hello.sh
-                    	echo "Build complete."
-                	   '''
+					sh 'chmod +x ./Hello.sh'
+                	sh './Hello.sh'
             } 
         } 
     } 
