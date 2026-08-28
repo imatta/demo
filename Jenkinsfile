@@ -6,6 +6,10 @@ pipeline {
 				   echo "Executing Automated Test1..."
 				   echo "Executing Automated Test2..."
 				   echo "Executing Automated Test3..."
+				   sh '''
+				   		ls -l 
+				   		pwd 
+				   		'''
 			      }
 			}
             stage('Build') { 
