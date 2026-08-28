@@ -7,7 +7,7 @@ pipeline {
 				   echo "Executing Automated Test2..."
 				   echo "Executing Automated Test3..."
 				   sh '''
-				   		ls -l Hello.sh
+				   		ls -l Hello.sh ./scripts/
 					  '''
 			      }
 			}
