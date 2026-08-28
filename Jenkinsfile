@@ -10,6 +10,7 @@ pipeline {
 				   		ls -l Hello.sh
 						pwd
 						ls -lrt
+						pwd
 					  '''
 					echo "Shirish Executing Automated Test4..."
 			      }
