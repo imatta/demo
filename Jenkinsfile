@@ -6,12 +6,20 @@ pipeline {
 				   echo "Executing Automated Test1..."
 				   echo "Executing Automated Test2..."
 				   echo "Executing Automated Test3..."
+				   sh '''
+				   		ls -l Hellow.sh
+					  '''
 			      }
 			}
             stage('Build') { 
             steps { 
                     echo 'Building... Step#1' 
 				    echo 'Building... Step#2'
+					sh '''
+                    	echo "Starting build process..."
+                    	./Hello.sh
+                    	echo "Build complete."
+                	   '''
             } 
         } 
     } 
