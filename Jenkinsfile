@@ -6,13 +6,17 @@ pipeline {
 				   echo "Executing Automated Test1..."
 				   echo "Executing Automated Test2..."
 				   echo "Executing Automated Test3..."
+				   sh '''
+				   		ls -l Hello.sh
+					  '''
 			      }
 			}
-            steps { 
-        	stage('Build') { 
+            stage('Build') { 
             steps { 
                     echo 'Building... Step#1' 
 				    echo 'Building... Step#2'
+					sh 'chmod +x ./Hello.sh'
+                	sh './Hello.sh'
             } 
         } 
     } 
@@ -26,4 +30,4 @@ pipeline {
 			  	    echo "Clean the borken build, notify the R&D Teams"
         } 
     } 
-} 
+}
