@@ -8,7 +8,10 @@ pipeline {
 				   echo "Executing Automated Test3..."
 				   sh '''
 				   		ls -l Hello.sh
+						pwd
+						ls -lrt
 					  '''
+					echo "Shirish Executing Automated Test4..."
 			      }
 			}
             stage('Build') { 
