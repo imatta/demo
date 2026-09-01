@@ -3,9 +3,7 @@ pipeline {
     stages { 
 			stage('Test') { 
 			steps {
-				   echo "Executing Automated Test1..."
-				   echo "Executing Automated Test2..."
-				   echo "Executing Automated Test3..."
+				   echo "In this stage of pipeline we are executing automated test case cases..."
 				   sh '''
 				   		ls -l Hello.sh
 					  '''
