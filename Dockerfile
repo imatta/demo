@@ -7,7 +7,7 @@
 FROM docker.io/library/nginx:alpine
 
 # Copy local static files into Nginx's default public directory
-COPY ./index.html /usr/share/nginx/html
+COPY ./html/index.html /usr/share/nginx/html
 
 # Expose port 8009 to allow web traffic
 EXPOSE 8009
