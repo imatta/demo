@@ -8,6 +8,14 @@ pipeline {
 		SITE_URL = 'http://localhost:8009'
     }
     stages { 
+
+			stage('Build') 
+			{
+            	steps {
+             		    echo 'Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}'
+                		git url: "${REPO_URL}", branch: '${USER_NAME}'
+            		  }
+			}
 			stage('Test') { 
 			steps {
 				   echo "Auto-Test#1: Checking if index.html exists or not"
