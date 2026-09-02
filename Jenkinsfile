@@ -32,8 +32,7 @@ pipeline {
     post { 
 	       success { 
                      echo "Success" 
-			         sh '''
-					 		sudo nginx -t ​
+			         sh '''				 		​
 					 		sudo systemctl reload nginx​
 						'''
 	       } 
