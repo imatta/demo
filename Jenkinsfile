@@ -1,31 +1,43 @@
 pipeline { 
-    agent any 
+    agent any
+	environment {
+		USER_NAME = 'rohith'
+		USER_PORT = '8002'
+        DEPLOY_PATH = '/home/${USER_NAME}/dist'
+        REPO_URL = 'https://github.com/imatta/demo.git'
+		SITE_URL = 'http://localhost:8002'
+    }
     stages { 
 			stage('Test') { 
 			steps {
-				   echo "Executing Automated Test1..."
-				   echo "Executing Automated Test2..."
-				   echo "Executing Automated Test3..."
+				   echo "Auto-Test#1: Checking if index.html exists or not"
 				   sh '''
-				   		ls -l 
-				   		pwd 
-				   		'''
+				   		ls -l ./index.html
+					  '''
 			      }
 			}
-            stage('Build') { 
+			stage('Pre-Deploy') { 
+			steps {
+				   echo "Pre-Deploy#1: Checking if site config exists or not"
+				   sh '''
+				   		ls -l /etc/nginx/sites-available/${USER_NAME}
+					  '''
+			      }
+			}
+            stage('Deploy') { 
             steps { 
-                    echo 'Building... Step#1' 
-				    echo 'Building... Step#2'
+                    sh 'chmod +x ./index.html'
+                	sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist/'
             } 
         } 
     } 
     post { 
 	       success { 
-                     echo "Success" 
-			         echo "Copy the artifact to the deployment server!" 
+                     echo "Success and Checking site availability..."
+			   	  	 sh '''curl -I ${SITE_URL}'''
 	       } 
 	      failure { 
-            		echo "Failed" 
+            		echo "Failed please chec ${SITE_URL} and app/dist folder of the server" 
 			  	    echo "Clean the borken build, notify the R&D Teams"
         } 
     } 
