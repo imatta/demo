@@ -16,7 +16,7 @@ pipeline {
                 		git url: "${REPO_URL}", branch: "${USER_NAME}"
 						echo "delete old image..."
 						sh '''podman rm -f my-web-container'''
-						sh '''podman build -t isaac-static-site-image .'''
+						sh '''podman build -t isaac-static-site-image . --replace'''
             		  }
 			}
 			stage('Test') { 
@@ -36,7 +36,7 @@ pipeline {
 					echo "Stopping old containers if running before deploying..."
 					sh '''podman ps -a'''
 					sh '''podman stop --all'''
-                    sh '''podman run -d --name my-web-container -p ${USER_PORT}:80 isaac-static-site-image --replace'''
+                    sh '''podman run -d --name my-web-container -p ${USER_PORT}:80 isaac-static-site-image'''
             } 
         } 
     } 
