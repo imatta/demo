@@ -4,8 +4,8 @@ FROM docker.io/library/nginx:alpine
 # Copy local static files into Nginx's default public directory
 COPY ./index.html /home/isaac/app/dist/
 
-# Expose port 8009 to allow web traffic
-EXPOSE 8009
+# Expose port 9009 to allow web traffic
+EXPOSE 9009
 
 # Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
