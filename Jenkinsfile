@@ -3,7 +3,7 @@ pipeline {
 	environment {
 		USER_NAME = "isaac"
 		USER_PORT = "8009"
-        DEPLOY_PATH = "/home/${USER_NAME}/dist"
+        DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
         REPO_URL = "https://github.com/imatta/demo.git"
 		SITE_URL = "http://localhost:${USER_PORT}"
     }
