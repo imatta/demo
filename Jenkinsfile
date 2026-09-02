@@ -12,6 +12,8 @@ pipeline {
 			stage('Build') 
 			{
             	steps {
+					    echo "Cleaning old images and build..."
+						sh '''podman system prune -a --volumes -f'''
              		    echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
                 		git url: "${REPO_URL}", branch: "${USER_NAME}"
 						sh '''podman build -t isaac-static-site-image .'''
