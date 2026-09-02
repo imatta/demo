@@ -12,9 +12,7 @@ pipeline {
 			stage('Build') 
 			{
             	steps {
-					    echo "Cleaning old images and build..."
-						sh '''podman rmi --force isaac-static-site-image'''
-             		    echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
+					    echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
                 		git url: "${REPO_URL}", branch: "${USER_NAME}"
 						sh '''podman build -t isaac-static-site-image .'''
             		  }
@@ -33,6 +31,9 @@ pipeline {
 			}
             stage('Deploy') { 
             steps { 
+					echo "Stopping old containers if running before deploying..."
+					sh '''podman ps -a'''
+					sh '''podman stop --all'''
                     sh '''podman run -d --name my-web-container -p ${USER_PORT}:80 isaac-static-site-image'''
             } 
         } 
