@@ -1,19 +1,19 @@
 pipeline { 
     agent any
 	environment {
-		USER_NAME = 'isaac'
-		USER_PORT = '8009'
-        DEPLOY_PATH = '/home/${USER_NAME}/dist'
-        REPO_URL = 'https://github.com/imatta/demo.git'
-		SITE_URL = 'http://localhost:8009'
+		USER_NAME = "isaac"
+		USER_PORT = "8009"
+        DEPLOY_PATH = "/home/${USER_NAME}/dist"
+        REPO_URL = "https://github.com/imatta/demo.git"
+		SITE_URL = "http://localhost:${USER_PORT}"
     }
     stages { 
 
 			stage('Build') 
 			{
             	steps {
-             		    echo 'Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}'
-                		git url: "${REPO_URL}", branch: '${USER_NAME}'
+             		    echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
+                		git url: "${REPO_URL}", branch: "${USER_NAME}"
             		  }
 			}
 			stage('Test') { 
