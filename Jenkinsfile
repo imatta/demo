@@ -5,7 +5,7 @@ pipeline {
 		USER_PORT = '8009'
         DEPLOY_PATH = '/home/${USER_NAME}/dist'
         REPO_URL = 'https://github.com/imatta/demo.git'
-		SITE_URL = 'http://labs2jobs.com:${USER_PORT}'
+		SITE_URL = 'http://labs2jobs.com:8009'
     }
     stages { 
 			stage('Test') { 
