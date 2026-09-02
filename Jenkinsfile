@@ -14,28 +14,24 @@ pipeline {
             	steps {
              		    echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
                 		git url: "${REPO_URL}", branch: "${USER_NAME}"
+						sh '''podman build -t isaac-static-site-image ${DEPLOY_PATH}'''
             		  }
 			}
 			stage('Test') { 
 			steps {
-				   echo "Auto-Test#1: Checking if index.html exists or not"
-				   sh '''
-				   		ls -l ./index.html
-					  '''
+				   echo "Auto-Test#1: Checking if image to deploy exists or not"
+				   sh '''ls -l ${DEPLOY_PATH}'''
 			      }
 			}
 			stage('Pre-Deploy') { 
 			steps {
 				   echo "Pre-Deploy#1: Checking if site config exists or not"
-				   sh '''
-				   		ls -l /etc/nginx/sites-available/${USER_NAME}
-					  '''
+				   sh '''which podman'''
 			      }
 			}
             stage('Deploy') { 
             steps { 
-                    sh 'chmod +x ./index.html'
-                	sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist/'
+                    sh '''podman run -d --name my-web-container -p 8009:8009 isaac-static-site-image'''
             } 
         } 
     } 
