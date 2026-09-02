@@ -14,13 +14,13 @@ pipeline {
             	steps {
              		    echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
                 		git url: "${REPO_URL}", branch: "${USER_NAME}"
-						sh '''podman build -t isaac-static-site-image ${DEPLOY_PATH}'''
+						sh '''podman build -t isaac-static-site-image .'''
             		  }
 			}
 			stage('Test') { 
 			steps {
 				   echo "Auto-Test#1: Checking if image to deploy exists or not"
-				   sh '''ls -l ${DEPLOY_PATH}'''
+				   sh '''ls -l .'''
 			      }
 			}
 			stage('Pre-Deploy') { 
