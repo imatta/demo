@@ -1,29 +1,41 @@
 pipeline { 
-    agent any 
+    agent any
+	environment {
+		USER_NAME = 'isaac'
+        DEPLOY_PATH = '/home/${USER_NAME}/dist'
+        REPO_URL = 'https://github.com/imatta/demo.git'
+    }
     stages { 
 			stage('Test') { 
 			steps {
-				   echo "Executing Automated Test1..."
-				   echo "Executing Automated Test2..."
-				   echo "Executing Automated Test3..."
+				   echo "Auto-Test#1: Checking if index.html exists or not"
 				   sh '''
-				   		ls -l Hello.sh
+				   		ls -l ./index.html
+					  '''
+			      }
+			}
+			stage('Pre-Deploy') { 
+			steps {
+				   echo "Pre-Deploy#1: Checking if site config exists or not"
+				   sh '''
+				   		ls -l /etc/nginx/sites-available/${USER_NAME}
 					  '''
 			      }
 			}
             stage('Build') { 
             steps { 
-                    echo 'Building... Step#1' 
-				    echo 'Building... Step#2'
-					sh 'chmod +x ./Hello.sh'
-                	sh './Hello.sh'
+                    sh 'chmod +x ./index.html'
+                	sh 'cp ./index.html /home/${USER_NAME}/app/dist/'
             } 
         } 
     } 
     post { 
 	       success { 
                      echo "Success" 
-			         echo "Copy the artifact to the deployment server!" 
+			         sh '''
+					 		sudo nginx -t ​
+					 		sudo systemctl reload nginx​
+						'''
 	       } 
 	      failure { 
             		echo "Failed" 
