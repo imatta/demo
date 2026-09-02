@@ -24,7 +24,7 @@ pipeline {
 					  '''
 			      }
 			}
-            stage('Build') { 
+            stage('Deploy') { 
             steps { 
                     sh 'chmod +x ./index.html'
                 	sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist/'
