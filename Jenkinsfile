@@ -3,7 +3,7 @@ pipeline {
 	environment {
 		USER_NAME = 'rohith'
 		USER_PORT = '8002'
-        DEPLOY_PATH = '/home/${USER_NAME}/dist'
+        DEPLOY_PATH = '/home/${USER_NAME}/app/dist'
         REPO_URL = 'https://github.com/imatta/demo.git'
 		SITE_URL = 'http://localhost:8002'
     }
@@ -27,6 +27,7 @@ pipeline {
             stage('Deploy') { 
             steps { 
                     sh 'chmod +x ./index.html'
+					sh 'sudo cp ./aisaacllc_logo_v2.png /home/${USER_NAME}/app/dist/'
                 	sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist/'
             } 
         } 
