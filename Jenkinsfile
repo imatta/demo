@@ -1,7 +1,7 @@
 pipeline { 
     agent any
 	environment {
-		USER_NAME = 'isaac'
+		USER_NAME = 'likhitha'
 		USER_PORT = '8001'
         DEPLOY_PATH = '/home/${USER_NAME}/dist'
         REPO_URL = 'https://github.com/imatta/demo.git'
