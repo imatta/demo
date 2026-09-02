@@ -35,7 +35,7 @@ pipeline {
 			}
             stage('Deploy') { 
             steps { 
-                    sh '''podman run -d --name my-web-container -p 8009:${USER_PORT} isaac-static-site-image'''
+                    sh '''podman run -d --name my-web-container -p 9009:${USER_PORT} isaac-static-site-image'''
             } 
         } 
     } 
