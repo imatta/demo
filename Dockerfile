@@ -2,7 +2,7 @@
 FROM docker.io/library/nginx:alpine
 
 # Copy local static files into Nginx's default public directory
-COPY ./index.html /home/isaac/app/dist/
+COPY /home/isaac/app/dist/index.html /usr/share/nginx/html/
 
 # Expose port 9009 to allow web traffic
 EXPOSE 9009
