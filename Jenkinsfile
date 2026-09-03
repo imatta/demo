@@ -1,45 +1,60 @@
-pipeline { 
+pipeline {
     agent any
-	environment {
-		USER_NAME = 'rohith'
-		USER_PORT = '8002'
-        DEPLOY_PATH = '/home/${USER_NAME}/app/dist'
-        REPO_URL = 'https://github.com/imatta/demo.git'
-		SITE_URL = 'http://localhost:8002'
+
+    environment {
+        USER_NAME = 'rohith'
+        USER_PORT = '8002'
+        SITE_URL = 'http://localhost:8002'
     }
-    stages { 
-			stage('Test') { 
-			steps {
-				   echo "Auto-Test#1: Checking if index.html exists or not"
-				   sh '''
-				   		ls -l ./index.html
-					  '''
-			      }
-			}
-			stage('Pre-Deploy') { 
-			steps {
-				   echo "Pre-Deploy#1: Checking if site config exists or not"
-				   sh '''
-				   		ls -l /etc/nginx/sites-available/${USER_NAME}
-					  '''
-			      }
-			}
-            stage('Deploy') { 
-            steps { 
-                    sh 'chmod +x ./index.html'
-					sh 'sudo cp ./aisaacllc_logo_v2.png /home/${USER_NAME}/app/dist/'
-                	sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist/'
-            } 
-        } 
-    } 
-    post { 
-	       success { 
-                     echo "Success and Checking site availability..."
-			   	  	 sh '''curl -I ${SITE_URL}'''
-	       } 
-	      failure { 
-            		echo "Failed please chec ${SITE_URL} and app/dist folder of the server" 
-			  	    echo "Clean the borken build, notify the R&D Teams"
-        } 
-    } 
+
+    stages {
+
+        stage('Test') {
+            steps {
+                echo "Auto-Test#1: Checking if index.html exists"
+                sh '''
+                    ls -l ./index.html
+                '''
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                echo "Building Podman image..."
+                sh '''
+                    podman build -t rohith-site .
+                '''
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                echo "Deploying Podman container..."
+                sh '''
+                    podman stop rohith-site || true
+                    podman rm rohith-site || true
+
+                    podman run -d \
+                        --name rohith-site \
+                        -p ${USER_PORT}:80 \
+                        rohith-site
+                '''
+            }
+        }
+    }
+
+    post {
+
+        success {
+            echo "Success and checking site availability..."
+            sh '''
+                curl -I ${SITE_URL}
+            '''
+        }
+
+        failure {
+            echo "Deployment failed."
+            echo "Check the Podman container and site."
+        }
+    }
 }
