@@ -1,7 +1,6 @@
 # Filename: Dockerfile
-# Version: 1.0
 # Author: Likhitha
-# Date: 09/02/2026
+# Date: 09/04/2026
 
 # Small, official Nginx image (Alpine = lightweight Linux)
 FROM docker.io/library/nginx:alpine
