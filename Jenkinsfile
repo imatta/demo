@@ -36,7 +36,7 @@ pipeline {
 					echo "Stopping old containers if running before deploying..."
 					sh '''podman ps -a'''
 					sh '''podman stop --all'''
-                    sh '''podman run -d --name my-web-container -p ${USER_PORT}:80 isaac-static-site-image'''
+                    sh '''podman run -d --replace --name ${USER_NAME}-web-container -p ${USER_PORT}:80 ${USER_NAME}-static-site-image'''
             } 
         } 
     } 
