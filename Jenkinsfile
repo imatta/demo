@@ -4,7 +4,7 @@ pipeline {
     environment {
         USER_NAME = 'rohith'
         USER_PORT = '8012'
-        SITE_URL = 'http://localhost:8002'
+        SITE_URL = 'http://localhost:8012'
     }
 
     stages {
