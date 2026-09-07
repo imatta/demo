@@ -39,6 +39,8 @@ pipeline {
                         -p ${USER_PORT}:80 \
                         rohith-site
                 '''
+                sh 'whoami'
+                sh 'podman ps -a'
             }
         }
     }
