@@ -16,8 +16,8 @@ pipeline {
                         echo "Cloning repository from GitHub... ${REPO_URL} branch:${BRANCH_NAME}"
                         git url: "${REPO_URL}", branch: "${BRANCH_NAME}"
                         echo "delete old image..."
-                        sh '''podman rm -f my-web-container'''
-                        sh '''podman build -t isaac-static-site-image .'''
+                        sh '''podman rm -f ${BRANCH_NAME}-web-container'''
+                        sh '''podman build -t ${BRANCH_NAME}-web-container .'''
                       }
             }
             stage('Test') { 
@@ -40,7 +40,7 @@ pipeline {
                     echo "Stopping old containers if running before deploying..."
                     sh '''podman ps -a'''
                     sh '''podman stop --all'''
-                    sh '''podman run -d --replace --name ${USER_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-static-site-image'''
+                    sh '''podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-static-site-image'''
             } 
         } 
     } 
