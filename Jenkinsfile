@@ -1,6 +1,7 @@
 pipeline { 
     agent any
     environment {
+        BRANCH_NAME = "isaac-dynamic"
         USER_NAME = "isaac"
         USER_PORT = "9009"
         DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
@@ -12,8 +13,8 @@ pipeline {
             stage('Build') 
             {
                 steps {
-                        echo "Cloning repository from GitHub... ${REPO_URL} branch:${USER_NAME}"
-                        git url: "${REPO_URL}", branch: "${USER_NAME}"
+                        echo "Cloning repository from GitHub... ${REPO_URL} branch:${BRANCH_NAME}"
+                        git url: "${REPO_URL}", branch: "${BRANCH_NAME}"
                         echo "delete old image..."
                         sh '''podman rm -f my-web-container'''
                         sh '''podman build -t isaac-static-site-image .'''
@@ -27,6 +28,9 @@ pipeline {
             }
             stage('Pre-Deploy') { 
             steps {
+                   echo "Check if the dist directory exists or not"
+                   sh 'sudo mkdir -p ${DEPLOY_PATH}'
+                   sh 'sudo ls -l ${DEPLOY_PATH}'
                    echo "Pre-Deploy#1: Checking if site config exists or not"
                    sh '''which podman'''
                   }
