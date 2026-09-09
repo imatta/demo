@@ -12,10 +12,7 @@ pipeline {
             steps {
                 echo "Auto-Test#1: Checking if required files exist"
                 sh '''
-                    ls -l ./html/index.html
-                    ls -l ./css/style.css
-                    ls -l ./scripts/ascii.sh
-                    
+                    ls -l ./index.html                                                           
                 '''
             }
         }
@@ -27,11 +24,16 @@ pipeline {
                 '''
             }
         }
-        stage('Build') {
+        stage('Deploy') {
             steps {
                 sh 'chmod -R +x .'
                 sh 'sudo mkdir -p ${DEPLOY_PATH}'
-                sh 'sudo cp -r ./* ${DEPLOY_PATH}/'
+                sh 'sudo cp -r ./* ${DEPLOY_PATH}/'                
+            }
+        }
+        stage('Post-Deploy') {
+            steps {
+                    'sh 'sudo ls -alrt ${DEPLOY_PATH}/'                
             }
         }
     }
