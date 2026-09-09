@@ -11,9 +11,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Auto-Test#1: Checking if required files exist"
-                sh '''
-                    ls -l ./index.html                                                           
-                '''
+                sh 'ls -l ./index.html'
+                sh 'cat ./index.html'
             }
         }
         stage('Pre-Deploy') {
@@ -28,7 +27,8 @@ pipeline {
             steps {
                 sh 'chmod -R +x .'
                 sh 'sudo mkdir -p ${DEPLOY_PATH}'
-                sh 'sudo cp -r ./* ${DEPLOY_PATH}/'                
+                sh 'sudo cp -r ./* ${DEPLOY_PATH}/'
+                sh 'sudo systemctl reload nginx'
             }
         }
         stage('Post-Deploy') {
