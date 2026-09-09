@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Post-Deploy') {
             steps {
-                    'sh 'sudo ls -alrt ${DEPLOY_PATH}/'                
+                    sh 'sudo ls -alrt ${DEPLOY_PATH}/'                
             }
         }
     }
