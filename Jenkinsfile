@@ -47,8 +47,8 @@ pipeline {
     post { 
            success { 
                      echo "Success and Checking site availability..."
-                          sh 'curl -I ${SITE_URL}'
-                          sh 'sudo podman ps -a'
+                          sh '''curl -I ${SITE_URL}'''
+                          sh '''sudo podman ps -a'''
            } 
           failure { 
                     echo "Failed please chec ${SITE_URL} and app/dist folder of the server" 
