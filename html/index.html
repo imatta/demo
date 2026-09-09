@@ -1,23 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Welcome to isaac's nginx site!</title>
-<style>
-html { color-scheme: light dark; }
-body { width: 35em; margin: 0 auto;
-font-family: Tahoma, Verdana, Arial, sans-serif; }
-</style>
-</head>
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Visitor & Interaction Tracker</title> 
+    <link rel="stylesheet" href="style.css"> 
+</head> 
 <body>
-<h1>Welcome to Isaac's nginx site!</h1>
-<h2>It is fun to learn... DevOps at Labs2Jobs Server</h2>
-<p>If you see this page, the nginx web server is successfully installed and working. Further configuration is required.</p>
-<br><a href="https://labs2jobs.com:8443">Jenkins Server</a><br>
-<a href="https://aisaac.llc">AI SaaC LLC</a>
-<p>Lab Tasks and Resources</p>
-<br>
-  <a href="https://aisaacllc-my.sharepoint.com/:w:/g/personal/isaac_aisaac_llc/IQBwTlBtXFY7QrAuPWOpjYSNAWuWIWAv0uDSkILBlTX5yxw?e=RPHsXG">Simple Dynamic Website v1.0 (Passcode: Optional)</a>.
-<br/>
-<p><em>Thank you for using nginx.</em></p>
-</body>
+    <div class="container"> 
+        <header> 
+            <h1>Analytics Dashboard</h1> 
+            <p>Real-time client-side tracking running on Nginx Alpine</p> 
+        </header> 
+ 
+        <section class="stats-grid"> 
+            <div class="card"> 
+                <h3>Unique Visitors</h3> 
+                <p id="visitor-count" class="stat-value">0</p> 
+            </div> 
+            <div class="card"> 
+                <h3>Time Spent on Page</h3> 
+                <p id="time-spent" class="stat-value">0s</p> 
+            </div> 
+            <div class="card"> 
+                <h3>Total Link Clicks</h3> 
+                <p id="click-count" class="stat-value">0</p> 
+            </div> 
+        </section> 
+ 
+        <section class="navigation-links"> 
+            <h2>Test Links</h2> 
+            <p>Click these links to test the event listener tracking functionality:</p> 
+            <ul> 
+                <li><a href="#feature-one" class="tracked-link">Explore Feature One</a></li> 
+                <li><a href="#feature-two" class="tracked-link">Check Feature Two</a></li> 
+                <li><a href="#documentation" class="tracked-link">Read Documentation</a></li> 
+            </ul> 
+        </section> 
+ 
+        <section class="log-section"> 
+            <h2>Activity Log</h2> 
+            <ul id="activity-log"> 
+                <!-- Dynamic logs populate here --> 
+            </ul> 
+        </section> 
+    </div>
+      <script src="script.js"></script> 
+</body> 
 </html>
