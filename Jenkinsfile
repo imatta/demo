@@ -14,7 +14,7 @@ pipeline {
                 sh '''
                     ls -l ./html/index.html
                     ls -l ./css/style.css
-                    ls -l ./scripts/script.js
+                    ls -l ./scripts/ascii.sh
                     
                 '''
             }
