@@ -3,7 +3,7 @@ pipeline {
     environment {
         BRANCH_NAME = "isaac_dynamic"
         USER_NAME = "isaac"
-        USER_PORT = "9009"
+        USER_PORT = "9007"
         DEPLOY_PATH = "/home/${BRANCH_NAME}/app/dist"
         REPO_URL = "https://github.com/imatta/demo.git"
         SITE_URL = "http://localhost:${USER_PORT}"
