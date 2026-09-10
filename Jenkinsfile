@@ -21,8 +21,7 @@ pipeline {
                     podman run --rm alpine echo "Rootless Podman works!"
                 '''
                    }
-            }
-                }
+            }                
             stage('Build') 
             {
                 steps {
