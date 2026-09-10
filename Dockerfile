@@ -9,7 +9,7 @@ FROM docker.io/library/nginx:alpine
 COPY ./html/index.html /usr/share/nginx/html
 COPY ./css/style.css /usr/share/nginx/html
 COPY ./scripts/test.js /usr/share/nginx/html/
-COPY ./"architecture.png" /usr/share/nginx/html/
+COPY ./image/architecture.png /usr/share/nginx/html/
 
 # Document that this container uses port 9001
 EXPOSE 9001
