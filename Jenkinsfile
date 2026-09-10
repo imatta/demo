@@ -18,7 +18,7 @@ pipeline {
                         echo "Check if the image already exists..."
                         sh 'podman images ${BRANCH_NAME}-web-container'
                         echo "delete old image..."
-                        sh 'podman rmi ${BRANCH_NAME}-web-container'
+                        sh 'podman rmi -f ${BRANCH_NAME}-web-container'
                         sh 'podman build -t ${BRANCH_NAME}-web-container .'
                       }
             }
@@ -34,7 +34,9 @@ pipeline {
                    sh 'sudo mkdir -p ${DEPLOY_PATH}'
                    sh 'sudo ls -l ${DEPLOY_PATH}'
                    echo "Pre-Deploy#1: Checking if podman is available"
-                   sh '''which podman'''
+                   sh 'which podman'
+                   echo "Checking resources..."
+                   sh 'sudo df -h && free -h'
                   }
             }
             stage('Deploy') { 
