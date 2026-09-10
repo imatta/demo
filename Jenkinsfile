@@ -55,9 +55,9 @@ pipeline {
             }
             stage('Deploy') { 
             steps { 
-                    sh '''sudo podman ps -a'''
+                    sh 'podman ps -a'
                     sh 'podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
-                    sh '''sudo podman ps -a'''
+                    sh 'podman ps -a'
             } 
         } 
     } 
