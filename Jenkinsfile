@@ -17,29 +17,29 @@ pipeline {
                         git url: "${REPO_URL}", branch: "${BRANCH_NAME}"
                          
                         echo "Check if the image already exists..."
-                        sh 'podman images ${BRANCH_NAME}-web-container'
+                        sh 'sudo podman images ${BRANCH_NAME}-web-container'
                         
                         echo "Stopping and removing existing container if is already running with same exact name"
                         //sh 'podman stop $(podman ps -a -q --filter name=${BRANCH_NAME}-web-container) && podman rm $(podman ps -a -q --filter name=${BRANCH_NAME}-web-container)'
                         sh'''
-                        ids=$(podman ps -a -q --filter name=${BRANCH_NAME}-web-container)
+                        ids=$(sudo podman ps -a -q --filter name=${BRANCH_NAME}-web-container)
                         if [ -n "$ids" ]; then
-                                podman stop $ids && podman rm $ids
+                                sudo podman stop $ids && podman rm $ids
                         else
                                 echo "No matching containers found for '${BRANCH_NAME}-web-container'."
                         fi
                         '''
                         echo "Deleting old image if already exists"    
-                        sh 'podman rmi -f ${BRANCH_NAME}-web-container'
+                        sh 'sudo podman rmi -f ${BRANCH_NAME}-web-container'
                         
                         echo "Building new image, with new code checked out from GitHub"
-                        sh 'podman build -t ${BRANCH_NAME}-web-container .'
+                        sh 'sudo podman build -t ${BRANCH_NAME}-web-container .'
                       }
             }
             stage('Test') { 
             steps {
                    echo "Auto-Test#1: Checking if the image created is available to deploy"
-                   sh 'podman images ${BRANCH_NAME}-web-container'
+                   sh 'sudo podman images ${BRANCH_NAME}-web-container'
                   }
             }
             stage('Pre-Deploy') { 
@@ -55,9 +55,9 @@ pipeline {
             }
             stage('Deploy') { 
             steps { 
-                    sh 'podman ps -a'
-                    sh 'podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
-                    sh 'podman ps -a'
+                    sh 'sudo podman ps -a'
+                    sh 'sudo podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
+                    sh 'sudo podman ps -a'
             } 
         } 
     } 
