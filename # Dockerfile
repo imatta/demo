@@ -10,8 +10,8 @@ COPY ./html/index.html /usr/share/nginx/html
 COPY ./html/style.css /usr/share/nginx/html
 COPY ./"architecture.png" /usr/share/nginx/html/
 
-# Document that this container uses port 8001
-EXPOSE 8001
+# Document that this container uses port 9001
+EXPOSE 9001
 
 # Run Nginx in the foreground (required so the container stays alive)
 CMD ["nginx", "-g", "daemon off;"]
