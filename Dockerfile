@@ -8,7 +8,7 @@ FROM docker.io/library/nginx:alpine
 # Copy our website files into Nginx's default serving folder
 COPY ./html/index.html /usr/share/nginx/html
 COPY ./css/style.css /usr/share/nginx/html
-COPY ./scripts/script.js /usr/share/nginx/html/
+COPY ./scripts/test.js /usr/share/nginx/html/
 COPY ./"architecture.png" /usr/share/nginx/html/
 
 # Document that this container uses port 9001
