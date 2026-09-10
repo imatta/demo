@@ -53,13 +53,13 @@ pipeline {
                    sh 'sudo df -h && free -h'
                   }
             }
-            stage('Deploy') { 
-            steps { 
-                    sh 'podman ps -a'
-                    sh 'podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
-                    sh 'podman ps -a'
-            } 
-        } 
+           stage('Deploy') { 
+    steps { 
+        sh 'podman ps -a'
+        sh 'podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container nginx -g "daemon off;"'
+        sh 'podman ps -a'
+    } 
+}
     } 
     post { 
            success { 
