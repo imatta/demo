@@ -3,7 +3,7 @@ pipeline {
     environment {
         BRANCH_NAME = "isaac_dynamic"
         USER_NAME = "isaac"
-        USER_PORT = "9007"
+        USER_PORT = "9009"
         DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
         REPO_URL = "https://github.com/imatta/demo.git"
         SITE_URL = "http://localhost:${USER_PORT}"
@@ -23,7 +23,8 @@ pipeline {
             stage('Test') { 
             steps {
                    echo "Auto-Test#1: Checking if image to deploy exists or not"
-                   sh '''ls -l .'''
+                   sh 'ls -l .'
+                   sh 'podman image list'
                   }
             }
             stage('Pre-Deploy') { 
@@ -39,16 +40,15 @@ pipeline {
             steps { 
                     echo "Stopping old containers if running before deploying..."
                     sh '''podman ps -a'''
-                    sh '''podman stop --all'''
-                    sh '''podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-static-site-image'''
+                    sh '''podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-site-image'''
+                    sh '''sudo podman ps -a'''
             } 
         } 
     } 
     post { 
            success { 
                      echo "Success and Checking site availability..."
-                          sh '''curl -I ${SITE_URL}'''
-                          sh '''sudo podman ps -a'''
+                          sh '''curl -I ${SITE_URL}'''                          
            } 
           failure { 
                     echo "Failed please chec ${SITE_URL} and app/dist folder of the server" 
