@@ -1,7 +1,7 @@
 pipeline { 
     agent any
     environment {
-        BUILD_ID = "dontKillMe"
+        //BUILD_ID = "dontKillMe"
         BRANCH_NAME = "isaac_dynamic"
         USER_NAME = "isaac"
         USER_PORT = "9009"
@@ -68,7 +68,7 @@ pipeline {
             stage('Deploy') { 
             steps { 
                     sh 'podman ps -a'
-                    sh 'podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
+                    sh 'setsid podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
                     sh 'podman ps -a'
             } 
         } 
