@@ -1,6 +1,7 @@
 pipeline { 
     agent any
     environment {
+        BUILD_ID = "dontKillMe"
         BRANCH_NAME = "isaac_dynamic"
         USER_NAME = "isaac"
         USER_PORT = "9009"
