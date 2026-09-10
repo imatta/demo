@@ -68,7 +68,8 @@ pipeline {
             stage('Deploy') { 
             steps { 
                     sh 'podman ps -a'
-                    sh 'setsid podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'
+                    // run as detached process, re-direct all logs
+                    sh 'nohup podman run -d --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container > /var/log/${BRANCH_NAME}-web-container_run.log 2>&1 & disown'
                     sh 'podman ps -a'
             } 
         } 
