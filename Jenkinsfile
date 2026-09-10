@@ -10,6 +10,19 @@ pipeline {
     }
     stages { 
 
+            stage('Dry-Run')
+            {
+            steps {
+                sh '''
+                    export XDG_RUNTIME_DIR=/run/user/$(id -u)
+                    export DBUS_SESSION_BUS_ADDRESS=unix:path=${XDG_RUNTIME_DIR}/bus
+                    
+                    podman info
+                    podman run --rm alpine echo "Rootless Podman works!"
+                '''
+                   }
+            }
+                }
             stage('Build') 
             {
                 steps {
