@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         USER_NAME = 'rohith'
-        USER_PORT = '9002'
-        SITE_URL = 'http://localhost:9002'
+        USER_PORT = '9004'
+        SITE_URL = 'http://localhost:9004'
     }
 
     stages {
