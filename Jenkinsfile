@@ -40,7 +40,7 @@ pipeline {
             steps { 
                     echo "Stopping old containers if running before deploying..."
                     sh '''podman ps -a'''
-                    sh '''podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-site-image'''
+                    sh '''podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container'''
                     sh '''sudo podman ps -a'''
             } 
         } 
