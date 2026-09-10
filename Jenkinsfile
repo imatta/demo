@@ -1,7 +1,7 @@
 pipeline { 
     agent any
     environment {
-        //BUILD_ID = "dontKillMe"
+        BUILD_ID = "dontKillMe"
         BRANCH_NAME = "isaac_dynamic"
         USER_NAME = "isaac"
         USER_PORT = "9009"
@@ -77,7 +77,8 @@ pipeline {
     post { 
            success { 
                      echo "Success and Checking site availability..."
-                          sh '''curl -I ${SITE_URL}'''                          
+                          sh '''curl -I ${SITE_URL}'''     
+                     sleep 300
            } 
           failure { 
                     echo "Failed please chec ${SITE_URL} and app/dist folder of the server" 
