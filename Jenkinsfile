@@ -3,7 +3,7 @@ pipeline {
     environment {
         BRANCH_NAME = "likhitha_dynamic"
         USER_NAME = "likhitha"
-        USER_PORT = "8001"
+        USER_PORT = "9001"
         DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
         REPO_URL = "https://github.com/imatta/demo.git"
         SITE_URL = "http://localhost:${USER_PORT}"
