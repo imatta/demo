@@ -1,7 +1,6 @@
 pipeline { 
     agent any
     environment {
-        BUILD_ID = "dontKillMe"
         BRANCH_NAME = "isaac_dynamic"
         USER_NAME = "isaac"
         USER_PORT = "9009"
@@ -14,12 +13,8 @@ pipeline {
             stage('Dry-Run')
             {
             steps {
-                sh '''
-                    export XDG_RUNTIME_DIR=/run/user/$(id -u)
-                    export DBUS_SESSION_BUS_ADDRESS=unix:path=${XDG_RUNTIME_DIR}/bus
-                    
-                    podman info
-                    podman run --rm alpine echo "Rootless Podman works!"
+                sh '''                    
+                    podman info                    
                 '''
                    }
             }                
@@ -60,7 +55,7 @@ pipeline {
                    sh 'sudo mkdir -p ${DEPLOY_PATH}'
                    sh 'sudo ls -l ${DEPLOY_PATH}'
                    echo "Pre-Deploy#1: Checking if podman is available"
-                   sh 'which podman'
+                   sh 'podman info'
                    echo "Checking resources..."
                    sh 'sudo df -h && free -h'
                   }
