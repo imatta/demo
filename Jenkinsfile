@@ -68,7 +68,10 @@ pipeline {
                 sh 'podman ps -a'
                 sh '''
                     export BUILD_ID=dontKillMe
-                    podman run -d --replace --name ${BRANCH_NAME}-web-container -p 127.0.0.1:${USER_PORT}:80 ${BRANCH_NAME}-web-container
+                    export JENKINS_NODE_COOKIE=dontKillMe
+                    setsid podman run -d --replace --name ${BRANCH_NAME}-web-container -p 127.0.0.1:${USER_PORT}:80 ${BRANCH_NAME}-web-container < /dev/null > /dev/null 2>&1 &
+                    disown
+                    sleep 3
                 '''
                 sh 'podman ps -a'
             }
