@@ -67,6 +67,7 @@ pipeline {
             steps {
                 sh 'podman ps -a'
                 sh '''
+                    export BUILD_ID=dontKillMe
                     podman run -d --replace --name ${BRANCH_NAME}-web-container -p 127.0.0.1:${USER_PORT}:80 ${BRANCH_NAME}-web-container
                 '''
                 sh 'podman ps -a'
