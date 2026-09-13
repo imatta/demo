@@ -1,4 +1,4 @@
-pipeline { 
+pipeline {
     agent any
     environment {
         BRANCH_NAME = "likhitha_dynamic"
@@ -8,16 +8,24 @@ pipeline {
         REPO_URL = "https://github.com/imatta/demo.git"
         SITE_URL = "http://localhost:${USER_PORT}"
     }
-    stages { 
+    stages {
+
+        stage('Dry-Run') {
+            steps {
+                sh '''
+                    podman info
+                '''
+            }
+        }
 
         stage('Build') {
             steps {
                 echo "Cloning repository from GitHub... ${REPO_URL} branch:${BRANCH_NAME}"
                 git url: "${REPO_URL}", branch: "${BRANCH_NAME}"
-                
+
                 echo "Check if the image already exists..."
                 sh 'podman images ${BRANCH_NAME}-web-container'
-                
+
                 echo "Stopping and removing existing container if it is already running"
                 sh '''
                 ids=$(podman ps -a -q --filter name=${BRANCH_NAME}-web-container)
@@ -27,51 +35,53 @@ pipeline {
                     echo "No matching containers found for '${BRANCH_NAME}-web-container'."
                 fi
                 '''
-                
-                echo "Deleting old image if already exists"    
+
+                echo "Deleting old image if already exists"
                 sh 'podman rmi -f ${BRANCH_NAME}-web-container'
-                
+
                 echo "Building new image, with new code checked out from GitHub"
                 sh 'podman build -t ${BRANCH_NAME}-web-container .'
             }
         }
 
-        stage('Test') { 
+        stage('Test') {
             steps {
                 echo "Auto-Test#1: Checking if the image created is available to deploy"
                 sh 'podman images ${BRANCH_NAME}-web-container'
             }
         }
 
-        stage('Pre-Deploy') { 
+        stage('Pre-Deploy') {
             steps {
                 echo "Check if the dist directory exists or not"
                 sh 'sudo mkdir -p ${DEPLOY_PATH}'
                 sh 'sudo ls -l ${DEPLOY_PATH}'
                 echo "Pre-Deploy#1: Checking if podman is available"
-                sh 'which podman'
+                sh 'podman info'
                 echo "Checking resources..."
                 sh 'sudo df -h && free -h'
             }
         }
 
-        stage('Deploy') { 
-            steps { 
+        stage('Deploy') {
+            steps {
                 sh 'podman ps -a'
-                sh 'podman run -d --replace --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container nginx -g "daemon off;"'
+                sh '''
+                    nohup podman run -d --replace --name ${BRANCH_NAME}-web-container -p 127.0.0.1:${USER_PORT}:80 ${BRANCH_NAME}-web-container > /var/lib/jenkins/logs/${BRANCH_NAME}-web-container_run.log 2>&1 &
+                '''
                 sh 'podman ps -a'
-            } 
-        } 
-    } 
+            }
+        }
+    }
 
-    post { 
-        success { 
+    post {
+        success {
             echo "Success and Checking site availability..."
-            sh 'curl -I ${SITE_URL}'                        
-        } 
-        failure { 
-            echo "Failed please check ${SITE_URL} and app/dist folder of the server" 
+            sh '''curl -I ${SITE_URL}'''
+        }
+        failure {
+            echo "Failed please check ${SITE_URL} and app/dist folder of the server"
             echo "Clean the broken build, notify the R&D Teams"
-        } 
-    } 
+        }
+    }
 }
