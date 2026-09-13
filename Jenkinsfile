@@ -67,7 +67,7 @@ pipeline {
             steps {
                 sh 'podman ps -a'
                 sh '''
-                    nohup podman run -d --replace --name ${BRANCH_NAME}-web-container -p 127.0.0.1:${USER_PORT}:80 ${BRANCH_NAME}-web-container > /var/lib/jenkins/logs/${BRANCH_NAME}-web-container_run.log 2>&1 &
+                    podman run -d --replace --name ${BRANCH_NAME}-web-container -p 127.0.0.1:${USER_PORT}:80 ${BRANCH_NAME}-web-container
                 '''
                 sh 'podman ps -a'
             }
