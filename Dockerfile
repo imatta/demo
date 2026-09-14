@@ -8,7 +8,7 @@ FROM docker.io/library/nginx:alpine
 
 COPY ./HTML/index.html /usr/share/nginx/html/index.html
 COPY ./CSS /usr/share/nginx/html/CSS
-COPY ./Scripts /usr/share/nginx/html/Scripts
+COPY ./scripts /usr/share/nginx/html/Scripts
 
 EXPOSE 80
 
