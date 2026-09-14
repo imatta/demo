@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        BRANCH_NAME = "Rohith_dynamic"
+        BRANCH_NAME = "rohith_dynamic"
         USER_NAME = "rohith"
         USER_PORT = "9002"
 
