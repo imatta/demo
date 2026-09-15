@@ -35,6 +35,16 @@ header p {
     color: var(--text-muted); 
     margin: 0; 
 } 
+
+.sync-status {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.sync-status.error {
+    color: #c62828;
+}
  
 .stats-grid { 
     display: grid; 
