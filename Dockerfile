@@ -15,4 +15,4 @@ COPY ./scripts/script.js /usr/share/nginx/html/
 EXPOSE 9009
 
 # Start Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon on;"]
