@@ -19,7 +19,7 @@ pipeline {
             steps { 
                     sh 'podman ps -a'
                     // run as detached process, re-direct all logs
-                    sh 'nohup podman run -d --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 ${BRANCH_NAME}-web-container > /var/lib/jenkins/logs/${BRANCH_NAME}-web-container_run.log 2>&1 &'
+                    sh 'nohup podman run -d --name ${BRANCH_NAME}-web-container -p ${USER_PORT}:80 -v ${BRANCH_NAME}-analytics:/data ${BRANCH_NAME}-web-container > /var/lib/jenkins/logs/${BRANCH_NAME}-web-container_run.log 2>&1 &'
                     sh 'podman ps -a'
             } 
         } 

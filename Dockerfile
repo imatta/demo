@@ -3,16 +3,22 @@
 # Author: Isaac 
 # Date: 09/02/2026
 
-# Use the lightweight Alpine-based Nginx image
-FROM docker.io/library/nginx:alpine
+# Use the lightweight Alpine-based Node.js image
+FROM docker.io/library/node:22-alpine
 
-# Copy local static files into Nginx's default public directory
-COPY ./html/index.html /usr/share/nginx/html/
-COPY ./css/style.css /usr/share/nginx/html/
-COPY ./scripts/script.js /usr/share/nginx/html/
+WORKDIR /app
 
-# Expose port 9009 to allow web traffic
-EXPOSE 9009
+# Copy the static assets and the analytics API server
+COPY ./html ./html
+COPY ./css ./css
+COPY ./scripts ./scripts
+COPY ./server.js ./server.js
 
-# Start Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Keep analytics data on the server side
+VOLUME ["/data"]
+
+# Listen on port 80 inside the container; map host port 9009 to it
+EXPOSE 80
+
+# Start the web and analytics server
+CMD ["node", "server.js"]

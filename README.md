@@ -1,15 +1,15 @@
-# Demo Static Analytics Dashboard
+# Demo Server-Backed Analytics Dashboard
 
-This repository contains a small static web application that can be served by
-Nginx in a container and deployed through a Jenkins pipeline. The current
-application code is on the `isaac_dynamic` branch.
+This repository contains a small web application with a Node.js analytics API
+that can be served in a container and deployed through a Jenkins pipeline. The
+current application code is on the `isaac_dynamic` branch.
 
-The app is a browser-only analytics dashboard that demonstrates:
+The app is an analytics dashboard that demonstrates:
 
-- A unique visitor counter stored in `localStorage`
+- A global unique visitor counter stored on the server
 - A timer showing how long the visitor has stayed on the page
-- Link click tracking for demo navigation links
-- A live activity log updated by client-side JavaScript
+- Global link click tracking for demo navigation links
+- A live activity log synchronized from the server
 
 ## Repository layout
 
@@ -26,6 +26,7 @@ The `isaac_dynamic` branch contains the following project files:
 |   `-- ContainerDeploymentManualSteps.pdf
 |-- html/
 |   `-- index.html
+|-- server.js
 `-- scripts/
     |-- ascii.sh
     `-- script.js
@@ -33,11 +34,13 @@ The `isaac_dynamic` branch contains the following project files:
 
 Important files:
 
-- `html/index.html` - dashboard markup loaded by Nginx.
+- `html/index.html` - dashboard markup served by the Node.js server.
 - `css/style.css` - responsive dashboard styling.
-- `scripts/script.js` - client-side visitor, timer, click, and activity log logic.
-- `Dockerfile` - builds an Alpine Nginx image and copies the static assets into
-  Nginx's default web root.
+- `scripts/script.js` - client-side timer and analytics API integration.
+- `server.js` - Node.js static file server and analytics API using
+  `/data/analytics.json` for server-side storage.
+- `Dockerfile` - builds an Alpine Node.js image and copies the application into
+  `/app`.
 - `Jenkinsfile` - automates Podman build, cleanup, deployment, and basic
   availability checks for the `isaac_dynamic` branch.
 
@@ -47,7 +50,7 @@ For local development:
 
 - Git
 - A web browser
-- Optional: Python 3, Node.js, or any simple static file server
+- Node.js 22 or later
 
 For container deployment:
 
@@ -81,17 +84,14 @@ ls -la html css scripts
 
 ## Run locally without a container
 
-The source files are split across `html/`, `css/`, and `scripts/`. The
-production container copies them into one Nginx directory because
-`index.html` loads `./style.css` and `./script.js`. For the same layout locally,
-copy the files into a temporary preview directory before serving them.
+Use `server.js` locally so the dashboard can call the same server-side
+analytics API used in the container.
 
 From the repository root, run:
 
 ```bash
-preview_dir="$(mktemp -d)"
-cp html/index.html css/style.css scripts/script.js "$preview_dir"/
-python3 -m http.server 9009 --directory "$preview_dir"
+mkdir -p .data
+PORT=9009 ANALYTICS_FILE=.data/analytics.json node server.js
 ```
 
 Then open:
@@ -100,13 +100,14 @@ Then open:
 http://localhost:9009
 ```
 
-When you are done, stop the server with `Ctrl+C`. The temporary preview
-directory can be removed after testing.
+When you are done, stop the server with `Ctrl+C`. Local analytics data is stored
+in `.data/analytics.json`.
 
 ## Build and run with Docker
 
-The Dockerfile uses `docker.io/library/nginx:alpine`, copies the static assets
-into `/usr/share/nginx/html/`, and starts Nginx in the foreground.
+The Dockerfile uses `docker.io/library/node:22-alpine`, copies the app into
+`/app`, stores shared analytics under `/data/analytics.json`, and starts
+`server.js`.
 
 Build the image:
 
@@ -120,6 +121,7 @@ Run the container:
 docker run -d \
   --name isaac_dynamic-web-container \
   -p 9009:80 \
+  -v isaac_dynamic-analytics:/data \
   isaac_dynamic-web-container
 ```
 
@@ -177,6 +179,7 @@ Run the container:
 podman run -d \
   --name isaac_dynamic-web-container \
   -p 9009:80 \
+  -v isaac_dynamic-analytics:/data \
   isaac_dynamic-web-container
 ```
 
@@ -204,30 +207,38 @@ podman rmi -f isaac_dynamic-web-container
 
 The Dockerfile performs these steps:
 
-1. Starts from the lightweight Nginx Alpine image:
+1. Starts from the lightweight Node.js Alpine image:
 
    ```Dockerfile
-   FROM docker.io/library/nginx:alpine
+   FROM docker.io/library/node:22-alpine
    ```
 
-2. Copies the application files into Nginx's default public directory:
+2. Sets `/app` as the working directory and copies the application files:
 
    ```Dockerfile
-   COPY ./html/index.html /usr/share/nginx/html/
-   COPY ./css/style.css /usr/share/nginx/html/
-   COPY ./scripts/script.js /usr/share/nginx/html/
+   WORKDIR /app
+   COPY ./html ./html
+   COPY ./css ./css
+   COPY ./scripts ./scripts
+   COPY ./server.js ./server.js
    ```
 
-3. Documents port `9009` with `EXPOSE 9009`.
-
-4. Starts Nginx in the foreground:
+3. Declares `/data` as the volume for shared analytics persistence:
 
    ```Dockerfile
-   CMD ["nginx", "-g", "daemon off;"]
+   VOLUME ["/data"]
    ```
 
-Nginx listens on port `80` inside the container. The run command maps host port
-`9009` to container port `80` with `-p 9009:80`.
+4. Documents container port `80` with `EXPOSE 80`.
+
+5. Starts the Node.js web and analytics server:
+
+   ```Dockerfile
+   CMD ["node", "server.js"]
+   ```
+
+The server listens on port `80` inside the container. The run command maps host
+port `9009` to container port `80` with `-p 9009:80`.
 
 ## Jenkins pipeline deployment
 
@@ -295,6 +306,7 @@ after deployment.
      nohup podman run -d \
        --name isaac_dynamic-web-container \
        -p 9009:80 \
+       -v isaac_dynamic-analytics:/data \
        isaac_dynamic-web-container \
        > /var/lib/jenkins/logs/isaac_dynamic-web-container_run.log 2>&1 &
      ```
@@ -362,19 +374,26 @@ When the page loads, `scripts/script.js`:
 
 1. Reads `site_visitor_id` from browser `localStorage`.
 2. Creates a visitor id if one does not already exist.
-3. Increments `site_total_visitors` for new visitors.
-4. Updates the unique visitor count on the page.
+3. Sends the visitor id to `POST /api/analytics/visit`.
+4. Updates the global unique visitor count from the server response.
 5. Starts a one-second interval that updates time spent on the page.
-6. Reads `site_click_count` from `localStorage`.
-7. Tracks clicks on links and writes each click to the activity log.
+6. Sends tracked link clicks to `POST /api/analytics/click`.
+7. Refreshes the shared visitor count, click count, and activity log from
+   `GET /api/analytics` every five seconds.
 
-To reset the demo counters, clear the browser's site data or run this in the
-browser console:
+`server.js` stores shared analytics in `/data/analytics.json` by default. To
+reset server-side counters in a local run, stop the server and remove the data
+file:
+
+```bash
+rm -f .data/analytics.json
+```
+
+To reset only the current browser identity, clear the browser's site data or run
+this in the browser console:
 
 ```javascript
 localStorage.removeItem('site_visitor_id');
-localStorage.removeItem('site_total_visitors');
-localStorage.removeItem('site_click_count');
 location.reload();
 ```
 
