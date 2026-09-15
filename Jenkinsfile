@@ -12,9 +12,7 @@ pipeline {
 			stage('Test') { 
 			steps {
 				   echo "In this stage of pipeline we are executing automated test case cases..."
-				   sh '''
-				   		ls -l ./*.*
-					  '''
+				   sh 'cat ./README.md'
 			      }
 			}
             stage('Build') { 
