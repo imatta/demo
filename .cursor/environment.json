@@ -1,0 +1,13 @@
+{
+  "name": "Demo Analytics Dashboard",
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "analytics-server",
+      "command": "mkdir -p .data && PORT=9009 ANALYTICS_FILE=.data/analytics.json npm start"
+    }
+  ],
+  "ports": [
+    9009
+  ]
+}

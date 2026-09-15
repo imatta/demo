@@ -1,0 +1,14 @@
+{
+  "name": "demo-analytics-dashboard",
+  "version": "1.0.0",
+  "description": "Server-backed analytics dashboard with a Node.js static file server and analytics API.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "PORT=9009 ANALYTICS_FILE=.data/analytics.json node server.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
