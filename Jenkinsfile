@@ -13,7 +13,7 @@ pipeline {
 			steps {
 				   echo "In this stage of pipeline we are executing automated test case cases..."
 				   sh '''
-				   		ls -l Hello.sh
+				   		ls -l ./*.*
 					  '''
 			      }
 			}
