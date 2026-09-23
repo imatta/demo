@@ -1,24 +1,9 @@
-# Filename: Dockerfile
-# Version: 1.0
-# Author: Isaac 
-# Date: 09/02/2026
+FROM nginx:alpine
 
-# Use the lightweight Alpine-based Node.js image
-FROM docker.io/library/node:22-alpine
+COPY html/index.html /usr/share/nginx/html/index.html
+COPY css/style.css /usr/share/nginx/html/style.css
+COPY scripts/script.js /usr/share/nginx/html/script.js
 
-WORKDIR /app
-
-# Copy the static assets and the analytics API server
-COPY ./html ./html
-COPY ./css ./css
-COPY ./scripts ./scripts
-COPY ./server.js ./server.js
-
-# Keep analytics data on the server side
-VOLUME ["/data"]
-
-# Listen on port 80 inside the container; map host port 9009 to it
 EXPOSE 80
 
-# Start the web and analytics server
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
