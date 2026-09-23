@@ -3,13 +3,12 @@ pipeline {
     stages { 
 			stage('Test') { 
 			steps {
-				   echo "Executing Automated Test1..."
-				   echo "Executing Automated Test2..."
-				   echo "Executing Automated Test3..."
+				   echo "Auto Test 1: Checking if index.html exists or not"
 				   sh '''
-				   		ls -l Hello.sh
-						pwd
-						ls -lrt
+				   		//ls -l Hello.sh
+						ls -l index.html	
+						//pwd
+						//ls -lrt
 					  '''
 					echo "Shirish Executing Automated Test4..."
 			      }
@@ -18,7 +17,10 @@ pipeline {
             steps { 
                     echo 'Building... Step#1' 
 				    echo 'Building... Step#2'
-					sh 'chmod +x ./Hello.sh'
+					//sh 'chmod +x ./Hello.sh'
+				    sh 'chmod +x ./index.html'
+				    //sh 'cp ./index.html /home/shirish/app/dist/'
+				
                 	sh './Hello.sh'
             } 
         } 
