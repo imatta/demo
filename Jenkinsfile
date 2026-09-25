@@ -21,15 +21,17 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Nginx Docker image...'
-                sh 'podman build -t ${IMAGE_NAME}:latest .'
+                sh 'podman build -t anuja-site:latest .'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying Nginx website...'
-                sh 'podman rm -f ${CONTAINER_NAME} || true'
-                sh 'podman run -d --name ${CONTAINER_NAME} -p ${USER_PORT}:80 ${IMAGE_NAME}:latest'
+                sh 'sudo loginctl enable-linger jenkins'
+                sh 'podman stop anuja-site || true'
+                sh 'podman rm anuja-site || true'
+                sh 'podman run -d --name anuja-site -p 9005:80 anuja-site:latest'
             }
         }
     }
