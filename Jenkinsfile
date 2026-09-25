@@ -49,7 +49,7 @@ pipeline {
 				   		sh '''
 						sudo nginx -t
 						sudo systemctl reload nginx	
-						'''
+						   '''
 				   
 				   echo "Copy the artifact to the deployment server!" 
 	       } 
