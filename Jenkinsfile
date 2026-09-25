@@ -35,11 +35,11 @@ pipeline {
             steps { 
                     echo 'Building... Step#1' 
 				    echo 'Building... Step#2'
-					#sh 'chmod +x ./Hello.sh'
+					//sh 'chmod +x ./Hello.sh'
 				    sh 'chmod +x ./index.html'
 				    sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist'
 				
-                	#sh './Hello.sh'
+                	//sh './Hello.sh'
             } 
 	        } 
 	    } 
