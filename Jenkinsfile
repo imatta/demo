@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         BRANCH_NAME = "anuja"
-        USER_PORT = "9006"
+        USER_PORT = "9004"
         DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
         REPO_URL = "https://github.com/imatta/demo.git"
 		IMAGE_NAME = "anuja-nginx"
