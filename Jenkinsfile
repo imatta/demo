@@ -31,6 +31,7 @@ pipeline {
 		stage('Deploy') {
 			steps {
 				echo 'Deploying Nginx website...'
+				sh 'sudo loginctl enable-linger jenkins'
 				sh 'podman rm -f ${CONTAINER_NAME} || true'
 				sh 'podman run -d --name ${CONTAINER_NAME} -p ${USER_PORT}:80 ${IMAGE_NAME}:latest'
 			}
