@@ -1,62 +1,46 @@
 pipeline {
     agent any
-
     environment {
         USER_NAME = 'anuja'
         USER_PORT = '9005'
+        DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
+        REPO_URL = 'https://github.com/imatta/demo.git'
         SITE_URL = 'http://localhost:9005'
     }
-
     stages {
-
         stage('Test') {
             steps {
-                echo "Auto-Test#1: Checking if index.html exists"
+                echo "Auto-Test#1: Checking if required files exist"
                 sh '''
                     ls -l ./index.html
+                    ls -l ./style.css
+                    ls -l ./Dockerfile
                 '''
             }
         }
-
-        stage('Build Image') {
+        stage('Pre-Deploy') {
             steps {
-                echo "Building Podman image..."
+                echo "Pre-Deploy#1: Checking if site config exists or not"
                 sh '''
-                    podman build -t anuja-site .
+                    ls -l /etc/nginx/sites-available/${USER_NAME}
                 '''
             }
         }
-
-        stage('Deploy Container') {
+        stage('Build') {
             steps {
-                echo "Deploying Podman container..."
-                sh '''
-                    podman stop anuja-site || true
-                    podman rm anuja-site || true
-
-                    podman run -d \
-                        --name anuja-site \
-                        -p ${USER_PORT}:80 \
-                        anuja-site
-                '''
-                sh 'whoami'
-                sh 'podman ps -a'
+                sh 'chmod -R +x .'
+                sh 'sudo mkdir -p ${DEPLOY_PATH}'
+                sh 'sudo cp -r ./* ${DEPLOY_PATH}/'
             }
         }
     }
-
     post {
-
         success {
-            echo "Success and checking site availability..."
-            sh '''
-                curl -I ${SITE_URL}
-            '''
+            echo "Success and Checking site availability..."
+            sh '''curl -I ${SITE_URL}'''
         }
-
         failure {
-            echo "Deployment failed."
-            echo "Check the Podman container and site."
+            echo "Nginx deployment failed. Check the console output."
         }
     }
 }
