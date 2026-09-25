@@ -37,7 +37,7 @@ pipeline {
 				    echo 'Building... Step#2'
 					#sh 'chmod +x ./Hello.sh'
 				    sh 'chmod +x ./index.html'
-				    sh 'cp ./index.html /home/shirish/app/dist'
+				    sh 'sudo cp ./index.html /home/${USER_NAME}/app/dist'
 				
                 	#sh './Hello.sh'
             } 
@@ -46,7 +46,7 @@ pipeline {
 	    post { 
 		       success { 
 	                     echo "Success" 
-				   		Sh '''
+				   		sh '''
 						sudo nginx -t
 						sudo systemctl reload nginx	
 						'''
