@@ -1,5 +1,7 @@
 FROM nginx:alpine
 
+RUN rm -rf /usr/share/nginx/html/* 
+
 COPY html/index.html /usr/share/nginx/html/index.html
 COPY css/style.css /usr/share/nginx/html/style.css
 COPY scripts/script.js /usr/share/nginx/html/script.js
