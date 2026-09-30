@@ -31,7 +31,7 @@ pipeline {
                 sh 'sudo loginctl enable-linger jenkins'
                 sh 'podman stop anuja-site || true'
                 sh 'podman rm anuja-site || true'
-                sh 'podman run -d --name anuja-site -p 8003:80 anuja-site:latest'
+                sh 'podman run -d --name anuja-site -p 0.0.0.0:8003:80 anuja-site:latest'
             }
         }
     }
