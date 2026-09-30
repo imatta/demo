@@ -2,10 +2,10 @@ pipeline {
     agent any
     environment {
         USER_NAME = 'anuja'
-        USER_PORT = '8004'
+        USER_PORT = '8003'
         DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
         REPO_URL = 'https://github.com/imatta/demo.git'
-        SITE_URL = 'http://localhost:8004'
+        SITE_URL = 'http://localhost:8003'
     }
     stages {
 
@@ -31,7 +31,7 @@ pipeline {
                 sh 'sudo loginctl enable-linger jenkins'
                 sh 'podman stop anuja-site || true'
                 sh 'podman rm anuja-site || true'
-                sh 'podman run -d --name anuja-site -p 8004:80 anuja-site:latest'
+                sh 'podman run -d --name anuja-site -p 8003:80 anuja-site:latest'
             }
         }
     }
