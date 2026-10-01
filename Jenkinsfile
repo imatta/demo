@@ -55,7 +55,7 @@ pipeline {
 	       } 
 	      failure { 
             		echo "Failed" 
-			  	    echo "Clean the borken build, notify the R&D Teams"
+			  	    echo "Clean the broken build, notify the R&D Teams"
         } 
     } 
 }
