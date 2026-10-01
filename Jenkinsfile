@@ -1,9 +1,9 @@
 pipeline { 
     agent any
     environment {
-        BRANCH_NAME = "isaac_dynamic"
-        USER_NAME = "isaac"
-        USER_PORT = "9009"
+        BRANCH_NAME = "shirish_dynamic"
+        USER_NAME = "shirish"
+        USER_PORT = "9005"
         DEPLOY_PATH = "/home/${USER_NAME}/app/dist"
         REPO_URL = "https://github.com/imatta/demo.git"
         SITE_URL = "http://localhost:${USER_PORT}"
