@@ -31,8 +31,8 @@ pipeline {
                      sleep 300
            } 
           failure { 
-                    echo "Failed please chec ${SITE_URL} and app/dist folder of the server" 
-                      echo "Clean the borken build, notify the R&D Teams"
+                    echo "Failed please check ${SITE_URL} and app/dist folder of the server" 
+                    echo "Clean the broken build, notify the R&D Teams"
         } 
     } 
 }
