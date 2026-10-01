@@ -24,10 +24,11 @@ pipeline {
                 sh 'podman build -t anuja-site:latest .'
             }
         }
-
         stage('Deploy') {
             steps {
                 echo 'Deploying Nginx website...'
+                sh 'mkdir -p ${DEPLOY_PATH}'
+                sh 'cp -r html/* css scripts ${DEPLOY_PATH}/ || true'
                 sh 'sudo loginctl enable-linger jenkins'
                 sh 'podman stop anuja-site || true'
                 sh 'podman rm anuja-site || true'
