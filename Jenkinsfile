@@ -13,7 +13,7 @@ pipeline {
 				   echo "Auto Test 1: Checking if index.html exists or nopwfdt"
 				   sh '''
 				   		#ls -l Hello.sh
-						#pwd
+						pwd
 						#ls -lrt
 						ls -l index.html	
 					  '''
