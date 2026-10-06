@@ -3,7 +3,7 @@ pipeline {
 
 	environment {
 		USER_NAME = 'shirish'		
-		DEPLOY_PATH = '/home/${USER_NAME}/dist'
+		DEPLOY_PATH = '/home/${USER_NAME}/app/dist'
 		REPO_URL = 'https://githib.com/imatta/demo.git'
 	}
 	
