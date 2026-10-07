@@ -1,24 +1,18 @@
 # Filename: Dockerfile
 # Version: 1.0
-# Author: Isaac 
-# Date: 09/02/2026
+# Author: Shirish
+# Date: 10/07/2026
 
-# Use the lightweight Alpine-based Node.js image
-FROM docker.io/library/node:22-alpine
+# Small, offical nginx image (Alpine = lightweight Linux
+FROM docker.io/library/nginx:alpine
 
-WORKDIR /app
+# Copy our website files into nginx's default serving folder
+COPY ./html/index.html /usr/share/nginx/html
+COPY ./html/style.css /usr/share/nginx/html
 
-# Copy the static assets and the analytics API server
-COPY ./html ./html
-COPY ./css ./css
-COPY ./scripts ./scripts
-COPY ./server.js ./server.js
 
-# Keep analytics data on the server side
-VOLUME ["/data"]
+# Document that this container uses port 8005
+EXPOSE 8005
 
-# Listen on port 80 inside the container; map host port 9009 to it
-EXPOSE 80
-
-# Start the web and analytics server
-CMD ["node", "server.js"]
+# Run nginx in the foreground (required so the container stays alive)
+CMD ["nginx", "-g", "Daemon off;"]
